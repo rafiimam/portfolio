@@ -35,7 +35,11 @@ const controls = [
   },
 ];
 
-export default function AdminExperienceView({ formData, setFormData }) {
+export default function AdminExperienceView({
+  formData,
+  setFormData,
+  handleSaveData,
+}) {
   return (
     <div className="w-full">
       <div className="bg-[#fff] shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -44,7 +48,10 @@ export default function AdminExperienceView({ formData, setFormData }) {
           formData={formData}
           setFormData={setFormData}
         />
-        <button className="mt-[10px] border border-green-600 p-4 font-bold text-[16px]">
+        <button
+          onClick={() => handleSaveData("experience")}
+          className="mt-[10px] border border-green-600 p-4 font-bold text-[16px]"
+        >
           Add Info
         </button>
       </div>

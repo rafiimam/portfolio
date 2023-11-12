@@ -6,6 +6,7 @@ import AdminEducationView from "@/components/admin-view/education";
 import AdminExperienceView from "@/components/admin-view/experience";
 import AdminHomeView from "@/components/admin-view/home";
 import AdminProjectView from "@/components/admin-view/project";
+import { addData } from "@/services";
 import { useState } from "react";
 
 const initialHomeState = {
@@ -64,6 +65,7 @@ export default function adminView() {
         <AdminHomeView
           formData={homeViewFormData}
           setFormData={setHomeViewFormData}
+          handleSaveData={handleSaveData}
         />
       ),
     },
@@ -74,6 +76,7 @@ export default function adminView() {
         <AdminAboutView
           formData={aboutViewFormData}
           setFormData={setAboutViewFormData}
+          handleSaveData={handleSaveData}
         />
       ),
     },
@@ -84,6 +87,7 @@ export default function adminView() {
         <AdminExperienceView
           formData={experienceViewFormData}
           setFormData={setExperienceViewFormData}
+          handleSaveData={handleSaveData}
         />
       ),
     },
@@ -94,6 +98,7 @@ export default function adminView() {
         <AdminEducationView
           formData={educationViewFormData}
           setFormData={setEducationViewFormData}
+          handleSaveData={handleSaveData}
         />
       ),
     },
@@ -104,6 +109,7 @@ export default function adminView() {
         <AdminProjectView
           formData={projectViewFormData}
           setFormData={setProjectViewFormData}
+          handleSaveData={handleSaveData}
         />
       ),
     },
@@ -113,6 +119,22 @@ export default function adminView() {
       component: <AdminContactView />,
     },
   ];
+
+  async function handleSaveData() {
+    const dataMap = {
+      home: homeViewFormData,
+      about: aboutViewFormData,
+      education: educationViewFormData,
+      experience: experienceViewFormData,
+      project: projectViewFormData,
+    };
+
+    const response = await addData(
+      currentSelectedTab,
+      dataMap[currentSelectedTab]
+    );
+    console.log(response, "response");
+  }
 
   return (
     <dev className="border-b border-grey-200">
