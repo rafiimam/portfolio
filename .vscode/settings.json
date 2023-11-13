@@ -6,7 +6,10 @@
         "noofprojects",
         "noopener",
         "noreferrer",
+        "ortfolio",
+        "purgecss",
         "tablist",
+        "tailwindcss",
         "yearofexperience"
     ]
 }
