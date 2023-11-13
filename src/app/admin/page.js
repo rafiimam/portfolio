@@ -240,6 +240,15 @@ export default function adminView() {
             {item.label}
           </button>
         ))}
+        <button
+          onClick={() => {
+            setAuthUser(false);
+            sessionStorage.removeItem("authUser");
+          }}
+          className="p-4 font-bold text-xl text-black"
+        >
+          Log out
+        </button>
       </nav>
       <div className="mt-10 pt-10">
         {menuItems.map(
