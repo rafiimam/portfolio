@@ -6,7 +6,7 @@ import AdminEducationView from "@/components/admin-view/education";
 import AdminExperienceView from "@/components/admin-view/experience";
 import AdminHomeView from "@/components/admin-view/home";
 import AdminProjectView from "@/components/admin-view/project";
-import { addData, getData } from "@/services";
+import { addData, getData, updateData } from "@/services";
 import { useEffect, useState } from "react";
 
 const initialHomeState = {
@@ -58,6 +58,7 @@ export default function adminView() {
     useState(initialProjectState);
 
   const [allData, setAllData] = useState({});
+  const [update, setUpdate] = useState(false);
 
   const menuItems = [
     {
@@ -90,6 +91,7 @@ export default function adminView() {
           formData={experienceViewFormData}
           setFormData={setExperienceViewFormData}
           handleSaveData={handleSaveData}
+          data = {allData?.experience}
         />
       ),
     },
@@ -101,6 +103,7 @@ export default function adminView() {
           formData={educationViewFormData}
           setFormData={setEducationViewFormData}
           handleSaveData={handleSaveData}
+          data = {allData?.education}
         />
       ),
     },
@@ -112,6 +115,7 @@ export default function adminView() {
           formData={projectViewFormData}
           setFormData={setProjectViewFormData}
           handleSaveData={handleSaveData}
+          data = {allData?.project}
         />
       ),
     },
@@ -132,6 +136,7 @@ export default function adminView() {
       response.data.length
     ) {
       setHomeViewFormData(response && response.data[0]);
+      setUpdate(true);
     }
 
     if (
@@ -141,6 +146,7 @@ export default function adminView() {
       response.data.length
     ) {
       setAboutViewFormData(response && response.data[0]);
+      setUpdate(true);
     }
 
     if (response?.success) {
@@ -160,13 +166,12 @@ export default function adminView() {
       project: projectViewFormData,
     };
 
-    const response = await addData(
-      currentSelectedTab,
-      dataMap[currentSelectedTab]
-    );
+    const response = update
+      ? await updateData(currentSelectedTab, dataMap[currentSelectedTab])
+      : await addData(currentSelectedTab, dataMap[currentSelectedTab]);
     console.log(response, "response");
 
-    if (response.success) {
+    if (response && response.success) {
       resetFormDatas();
       extractAllDatas();
     }
@@ -180,17 +185,15 @@ export default function adminView() {
     setProjectViewFormData(initialProjectState);
   }
 
-
   useEffect(() => {
     const fetchData = async () => {
       await extractAllDatas();
     };
-  
+
     fetchData();
   }, [currentSelectedTab]);
-  
-  
-  console.log(allData,homeViewFormData,'homeViewFormData');
+
+  console.log(allData, homeViewFormData, "homeViewFormData");
 
   return (
     <div className="border-b border-grey-200">
@@ -203,6 +206,7 @@ export default function adminView() {
             onClick={() => {
               setCurrentSelectedTab(item.id);
               resetFormDatas();
+              setUpdate(false);
             }}
           >
             {item.label}
