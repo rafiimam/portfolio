@@ -13,6 +13,6 @@ const AboutSchema = new mongoose.Schema(
   }
 );
 
-const About = mongoose.model.About || mongoose.model("About", AboutSchema);
+const About = mongoose.models.About || mongoose.model("About", AboutSchema);
 
 export default About;

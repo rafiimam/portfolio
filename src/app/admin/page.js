@@ -6,8 +6,8 @@ import AdminEducationView from "@/components/admin-view/education";
 import AdminExperienceView from "@/components/admin-view/experience";
 import AdminHomeView from "@/components/admin-view/home";
 import AdminProjectView from "@/components/admin-view/project";
-import { addData } from "@/services";
-import { useState } from "react";
+import { addData, getData } from "@/services";
+import { useEffect, useState } from "react";
 
 const initialHomeState = {
   heading: "",
@@ -56,6 +56,8 @@ export default function adminView() {
   );
   const [projectViewFormData, setProjectViewFormData] =
     useState(initialProjectState);
+
+  const [allData, setAllData] = useState({});
 
   const menuItems = [
     {
@@ -120,6 +122,35 @@ export default function adminView() {
     },
   ];
 
+  async function extractAllDatas() {
+    const response = await getData(currentSelectedTab);
+
+    if (
+      currentSelectedTab === "home" &&
+      response &&
+      response.data &&
+      response.data.length
+    ) {
+      setHomeViewFormData(response && response.data[0]);
+    }
+
+    if (
+      currentSelectedTab === "about" &&
+      response &&
+      response.data &&
+      response.data.length
+    ) {
+      setAboutViewFormData(response && response.data[0]);
+    }
+
+    if (response?.success) {
+      setAllData({
+        ...allData,
+        [currentSelectedTab]: response && response.data,
+      });
+    }
+  }
+
   async function handleSaveData() {
     const dataMap = {
       home: homeViewFormData,
@@ -134,10 +165,35 @@ export default function adminView() {
       dataMap[currentSelectedTab]
     );
     console.log(response, "response");
+
+    if (response.success) {
+      resetFormDatas();
+      extractAllDatas();
+    }
   }
 
+  function resetFormDatas() {
+    setHomeViewFormData(initialHomeState);
+    setAboutViewFormData(initialAboutState);
+    setEducationViewFormData(initialEducationState);
+    setExperienceViewFormData(initialExperienceState);
+    setProjectViewFormData(initialProjectState);
+  }
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await extractAllDatas();
+    };
+  
+    fetchData();
+  }, [currentSelectedTab]);
+  
+  
+  console.log(allData,homeViewFormData,'homeViewFormData');
+
   return (
-    <dev className="border-b border-grey-200">
+    <div className="border-b border-grey-200">
       <nav className="-mb-0.5 flex justify-center space-x-6" role="tablist">
         {menuItems.map((item) => (
           <button
@@ -146,6 +202,7 @@ export default function adminView() {
             className="p-4 font-bold text-xl text-black"
             onClick={() => {
               setCurrentSelectedTab(item.id);
+              resetFormDatas();
             }}
           >
             {item.label}
@@ -157,6 +214,6 @@ export default function adminView() {
           (item) => item.id === currentSelectedTab && item.component
         )}
       </div>
-    </dev>
+    </div>
   );
 }

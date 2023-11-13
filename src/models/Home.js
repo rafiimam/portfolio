@@ -10,6 +10,6 @@ const HomeSchema = new mongoose.Schema(
   }
 );
 
-const Home = mongoose.model.Home || mongoose.model("Home", HomeSchema);
+const Home = mongoose.models.Home || mongoose.model("Home", HomeSchema);
 
 export default Home;

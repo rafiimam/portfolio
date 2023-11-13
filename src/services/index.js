@@ -22,7 +22,7 @@ export async function getData(currentTab) {
       method: "GET",
     });
 
-    const result = await response.json;
+    const result = await response.json();
 
     return result;
   } catch (e) {

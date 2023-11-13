@@ -12,6 +12,6 @@ const EducationSchema = new mongoose.Schema(
 );
 
 const Education =
-  mongoose.model.Education || mongoose.model("Education", EducationSchema);
+  mongoose.models.Education || mongoose.model("Education", EducationSchema);
 
 export default Education;
