@@ -5,8 +5,9 @@ import AdminContactView from "@/components/admin-view/contact";
 import AdminEducationView from "@/components/admin-view/education";
 import AdminExperienceView from "@/components/admin-view/experience";
 import AdminHomeView from "@/components/admin-view/home";
+import Login from "@/components/admin-view/login";
 import AdminProjectView from "@/components/admin-view/project";
-import { addData, getData, updateData } from "@/services";
+import { addData, getData, login, updateData } from "@/services";
 import { useEffect, useState } from "react";
 
 const initialHomeState = {
@@ -43,6 +44,10 @@ const initialProjectState = {
   github: "",
 };
 
+const initialLoginFormData = {
+  username: "",
+  password: "",
+};
 export default function adminView() {
   const [currentSelectedTab, setCurrentSelectedTab] = useState("home");
 
@@ -59,6 +64,8 @@ export default function adminView() {
 
   const [allData, setAllData] = useState({});
   const [update, setUpdate] = useState(false);
+  const [authUser, setAuthUser] = useState(false);
+  const [loginFormData, setLoginFormData] = useState(initialLoginFormData);
 
   const menuItems = [
     {
@@ -91,7 +98,7 @@ export default function adminView() {
           formData={experienceViewFormData}
           setFormData={setExperienceViewFormData}
           handleSaveData={handleSaveData}
-          data = {allData?.experience}
+          data={allData?.experience}
         />
       ),
     },
@@ -103,7 +110,7 @@ export default function adminView() {
           formData={educationViewFormData}
           setFormData={setEducationViewFormData}
           handleSaveData={handleSaveData}
-          data = {allData?.education}
+          data={allData?.education}
         />
       ),
     },
@@ -115,7 +122,7 @@ export default function adminView() {
           formData={projectViewFormData}
           setFormData={setProjectViewFormData}
           handleSaveData={handleSaveData}
-          data = {allData?.project}
+          data={allData?.project}
         />
       ),
     },
@@ -177,6 +184,10 @@ export default function adminView() {
     }
   }
 
+  useEffect(() => {
+    extractAllDatas();
+  }, [currentSelectedTab]);
+
   function resetFormDatas() {
     setHomeViewFormData(initialHomeState);
     setAboutViewFormData(initialAboutState);
@@ -185,15 +196,32 @@ export default function adminView() {
     setProjectViewFormData(initialProjectState);
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await extractAllDatas();
-    };
-
-    fetchData();
-  }, [currentSelectedTab]);
-
   console.log(allData, homeViewFormData, "homeViewFormData");
+
+  useEffect(() => {
+    setAuthUser(JSON.parse(sessionStorage.getItem("authUser")));
+  }, []);
+
+  async function handleLogIn() {
+    const res = await login(loginFormData);
+
+    console.log(res, "login");
+
+    if (res?.success) {
+      setAuthUser(true);
+      sessionStorage.setItem("authUser", JSON.stringify(true));
+    }
+  }
+
+  if (!authUser) {
+    return (
+      <Login
+        formData={loginFormData}
+        handleLogIn={handleLogIn}
+        setFormData={setLoginFormData}
+      />
+    );
+  }
 
   return (
     <div className="border-b border-grey-200">
