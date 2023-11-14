@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import AnimationWrapper from "../animation-wrapper";
 import { motion } from "framer-motion";
+import { BsFacebook,BsLinkedin,BsGithub } from "react-icons/bs";
 
 function variants() {
   return {
@@ -53,8 +54,13 @@ export default function ClientHomeView({ data }) {
                     ))
                 : null}
             </h1>
-            <p>{data && data.length
+            <p className="text-[black] mt-4 mb-8 font-bold">{data && data.length
                 ? data[0]?.summary:null}</p>
+            <motion.div className='flex gap-3'>
+                <BsFacebook color="#4585ed" className="w-[40px] h-[40px] mr-4"/>
+                <BsLinkedin color="#4585ed" className="w-[40px] h-[40px] mr-4"/>
+                <BsGithub color="#4585ed" className="w-[40px] h-[40px] mr-4"/>
+            </motion.div>
           </div>
         </motion.div>
       </AnimationWrapper>
