@@ -91,7 +91,7 @@ export default function ClientHomeView({ data }) {
                           index === 2 || index === 3
                             ? "text-blue-main"
                             : "text-[#000]"
-                        }`}
+                        } && ${index == 5? "typewriter" : ''}`}
                       >
                         {item}{" "}
                       </span>
