@@ -121,7 +121,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: green;
+  background: blue;
   -webkit-border-radius: 1ex;
 }
 
@@ -154,9 +154,9 @@ circle {
 }
 
 .MuiTimelineDot-root{
-  background-color: rgba(47, 171, 115, 1) !important;
+  background-color: "#4585ed" !important;
 }
 
 .MuiTimelineConnector-root{
-  background-color: rgba(47, 171, 115, 1) !important;
+  background-color: "#4585ed"  !important;
 }
