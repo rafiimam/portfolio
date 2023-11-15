@@ -1,9 +1,16 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import AnimationWrapper from "../animation-wrapper";
 import { motion } from "framer-motion";
-import { BsFacebook,BsLinkedin,BsGithub } from "react-icons/bs";
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaInstagram,
+  FaTwitter,
+} from "react-icons/fa";
+import Image from "next/image";
+import dp from "../../../assets/dp.png";
 
 function variants() {
   return {
@@ -22,10 +29,47 @@ function variants() {
   };
 }
 
+const socialIcons = [
+  {
+    id: "facebook",
+    icon: (
+      <FaFacebookF
+        color="#4585ed"
+        className="w-[40px] h-[40px] "
+      />
+    ),
+  },
+  {
+    id: "twitter",
+    icon: (
+      <FaTwitter color="#4585ed" className="w-[40px] h-[40px] " />
+    ),
+  },
+  {
+    id: "linkedin",
+    icon: (
+      <FaLinkedinIn
+        color="#4585ed"
+        className="w-[40px] h-[40px] "
+      />
+    ),
+  },
+  {
+    id: "instagram",
+    icon: (
+      <FaInstagram
+        color="#4585ed"
+        className="w-[40px] h-[40px] "
+      />
+    ),
+  },
+];
+
 export default function ClientHomeView({ data }) {
   console.log(data, "ClientHomeView");
 
   const setVariants = useMemo(() => variants(), []);
+  const containerRef = useRef(null);
 
   return (
     <div className="max-w-screen-xl mt-24 px-8 xl:px-16 mx-auto" id="home">
@@ -46,7 +90,7 @@ export default function ClientHomeView({ data }) {
                         className={`${
                           index === 2 || index === 3
                             ? "text-blue-main"
-                            : "text-[black]"
+                            : "text-[#000]"
                         }`}
                       >
                         {item}{" "}
@@ -54,14 +98,47 @@ export default function ClientHomeView({ data }) {
                     ))
                 : null}
             </h1>
-            <p className="text-[black] mt-4 mb-8 font-bold">{data && data.length
-                ? data[0]?.summary:null}</p>
-            <motion.div className='flex gap-3'>
-                <BsFacebook color="#4585ed" className="w-[40px] h-[40px] mr-4"/>
-                <BsLinkedin color="#4585ed" className="w-[40px] h-[40px] mr-4"/>
-                <BsGithub color="#4585ed" className="w-[40px] h-[40px] mr-4"/>
+            <p className="text-[#000] mt-4 mb-8 font-bold">
+              {data && data.length ? data[0]?.summary : null}
+            </p>
+            <motion.div className="flex gap-3 cursor-pointer">
+              {socialIcons.map((item) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ scale: 0 }}
+                  animate={{ rotate: 360, scale: 1 }}
+                  transition={{
+                    type: "spring",
+                    damping: 20,
+                    stiffness: 80,
+                    duration: 4,
+                  }}
+                  whileHover={{ scale: 1.2, rotate: 360 }}
+                  whileTap={{ scale: 0.8, rotate: -360, borderRadius: "100%" }}
+                >
+                  {item.icon}
+                </motion.div>
+              ))}
             </motion.div>
           </div>
+          <motion.div ref={containerRef} className="flex w-full justify-end">
+            <motion.div
+              drag
+              dragConstraints={containerRef}
+              className="w-[400px] h-[400px] relative bg-blue-main"
+            >
+              <div className="w-[400px] h-[400px] top-[40px] left-[-30px] rounded-lg border-[6px] border-[#000000] absolute"></div>
+              <Image
+                src={dp}
+                alt="Profile Picture"
+                layout="responsive"
+                quality={100}
+                height={300}
+                width={300}
+                className="absolute top-[15px] right-6"
+              />
+            </motion.div>
+          </motion.div>
         </motion.div>
       </AnimationWrapper>
     </div>
