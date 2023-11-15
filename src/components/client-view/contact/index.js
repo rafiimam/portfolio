@@ -75,7 +75,7 @@ export default function ClientContactView() {
           <h1 className="leading-[70px] mb-4 text-3xl lg:text-4xl xl:text-5xl font-medium">
             {"Contact Me".split(" ").map((item, index) => (
               <span
-                className={`${index === 1 ? "text-blue-main" : "text-[#000]"}`}
+                className={`${index === 0 ? "text-blue-main" : "text-[#000]"}`}
               >
                 {item}{" "}
               </span>
