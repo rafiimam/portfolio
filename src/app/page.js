@@ -4,7 +4,7 @@ import ClientExperienceAndEducationView from "@/components/client-view/experienc
 import ClientHomeView from "@/components/client-view/home";
 import ClientProjectView from "@/components/client-view/project";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.API_URL;
 
 async function extractAllDatas(currentSection) {
   const res = await fetch(`${API_BASE_URL}/api/${currentSection}/get`, {
