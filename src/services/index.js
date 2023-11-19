@@ -5,7 +5,7 @@ const API_BASE_URL = process.env.API_URL || '';
 
 export async function addData(currentTab, formData) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/${currentTab}/add`, {
+    const response = await fetch(`/api/${currentTab}/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export async function addData(currentTab, formData) {
 
 export async function getData(currentTab) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/${currentTab}/get`, {
+    const response = await fetch(`/api/${currentTab}/get`, {
       method: "GET",
     });
 
@@ -37,7 +37,7 @@ export async function getData(currentTab) {
 
 export async function updateData(currentTab, formData) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/${currentTab}/update`, {
+    const response = await fetch(`/api/${currentTab}/update`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export async function updateData(currentTab, formData) {
 
 export async function login(formData) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/login`, {
+    const response = await fetch(`/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
